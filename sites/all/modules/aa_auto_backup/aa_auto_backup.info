@@ -1,0 +1,5 @@
+name = Auto Backup Module
+description = backup on install and uninstall module
+core = 7.x
+dependencies[] = backup_migrate
+package = Bear

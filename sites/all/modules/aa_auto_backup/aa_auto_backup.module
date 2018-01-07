@@ -1,0 +1,61 @@
+<?php
+function aa_auto_backup_drupal_goto_alter(&$path, &$options, &$http_response_code) {
+  // A good addition to misery module.
+  $test='l';
+}
+function aa_auto_backup_init() {
+	
+}
+
+
+
+function aa_auto_backup_views_pre_render(&$view) {
+
+}
+function aa_auto_backup_form_alter(  &$form, $formState, $formId )
+{
+	if ( $formId == 'views_exposed_form' )
+	{
+		$form['#action'] = url($_GET['q']);
+	}
+}
+/**
+ * Implements hook_form_FORM_ID_alter(&$form, &$form_state, $form_id)
+ */
+function aa__auto_backup_form_views_form_commerce_cart_form_default_alter(&$form, &$form_state, $form_id) {
+}
+
+function aa_auto_backup_modules_enabled($modules) {
+   // dpm($modules);
+ //backup_migrate_action_backup("private");
+  backup_migrate_include('files', 'profiles');
+
+  $settings = _backup_migrate_profile_saved_default_profile();
+  $settings->destination_id = "private";
+  $modules_desc= implode(",", $modules);
+  $settings->filters['utils_description']="install ".$modules_desc;
+  
+  $settings->source_id = 'db';
+  backup_migrate_perform_backup($settings);
+}
+function aa_auto_backup_modules_installed($modules) {
+//dpm("function backup_migrate_modules_installed(modules) {");
+//dpm($modules);
+}
+function aa_auto_backup_modules_uninstalled($modules) {
+//dpm("function backup_migrate_modules_uninstalled($modules) {");
+//dpm($modules);
+}
+
+function aa_auto_backup_modules_disabled($modules) {
+ //dpm($modules);
+  backup_migrate_include('files', 'profiles');
+  $settings = _backup_migrate_profile_saved_default_profile();
+  $settings->destination_id = "private";
+  $modules_desc= implode(",", $modules);
+  $settings->filters['utils_description']="uninstall ".$modules_desc;
+   $settings->source_id = 'db';
+  backup_migrate_perform_backup($settings);
+}
+
+
